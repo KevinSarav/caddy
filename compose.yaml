@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     read_only: true
     environment:
-      DESEC_TOKEN: ${DESEC_TOKEN:?Set DESEC_TOKEN in .env}
+      DESEC_TOKEN: ${DESEC_TOKEN:-}
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -26,7 +26,7 @@ services:
     networks:
       proxy:
         aliases:
-          - ${S3_DOMAIN_ALIAS:?Set S3_DOMAIN_ALIAS in .env}
+          - ${S3_DOMAIN_ALIAS:-}
 
 networks:
   proxy:
