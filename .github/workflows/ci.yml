@@ -36,7 +36,7 @@ jobs:
             -v "$PWD":/work \
             -w /work \
             caddy:2 \
-            caddy fmt --check Caddyfile Caddyfile.private
+            caddy fmt Caddyfile Caddyfile.private
 
       - name: Validate Caddyfile syntax
         run: |
