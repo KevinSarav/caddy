@@ -3,10 +3,4 @@
 # Keep environment-specific domains, upstream topology, local cert paths,
 # and other private routes in Caddyfile.private (gitignored).
 
-{
-	servers {
-		protocols h1 h2
-	}
-}
-
 import Caddyfile.private

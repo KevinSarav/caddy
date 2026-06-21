@@ -6,8 +6,7 @@ FROM caddy:${CADDY_VERSION}-builder AS builder
 ARG DESEC_MODULE_VERSION
 RUN --mount=type=cache,target=/go/pkg/mod \
     --mount=type=cache,target=/root/.cache/go-build \
-    GOPROXY="https://proxy.golang.org,https://goproxy.io,direct" \
-    GOFLAGS="-mod=readonly" \
+    GOPROXY="https://proxy.golang.org|https://goproxy.io|direct" \
     xcaddy build \
     --with github.com/caddy-dns/desec@${DESEC_MODULE_VERSION}
 
