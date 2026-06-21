@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Ensure private Caddy include exists for CI
         run: |
@@ -36,7 +36,7 @@ jobs:
             -v "$PWD":/work \
             -w /work \
             caddy:2 \
-            caddy fmt Caddyfile && caddy fmt Caddyfile.private
+            sh -c 'caddy fmt --overwrite Caddyfile && caddy fmt --overwrite Caddyfile.private'
 
       - name: Validate Caddyfile syntax
         run: |
