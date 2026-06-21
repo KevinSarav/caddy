@@ -1,0 +1,9 @@
+services:
+  caddy-plugin-build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        CADDY_VERSION: ${CADDY_VERSION:-2.11}
+        DESEC_MODULE_VERSION: ${DESEC_MODULE_VERSION:-v1.1.0}
+    image: ${CADDY_IMAGE:-local/caddy-desec:2.11}

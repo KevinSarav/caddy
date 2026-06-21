@@ -1,0 +1,38 @@
+services:
+  caddy:
+    image: ${CADDY_IMAGE:-local/caddy-desec:2.11}
+    pull_policy: never
+    restart: unless-stopped
+    read_only: true
+    environment:
+      DESEC_TOKEN: ${DESEC_TOKEN:?Set DESEC_TOKEN in .env}
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    tmpfs:
+      - /tmp
+    ports:
+      - "80:80"
+      - "443:443"
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./Caddyfile.private:/etc/caddy/Caddyfile.private:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      proxy:
+        aliases:
+          - ${S3_DOMAIN_ALIAS:?Set S3_DOMAIN_ALIAS in .env}
+
+networks:
+  proxy:
+    external: true
+    name: proxy
+
+volumes:
+  caddy-data:
+  caddy-config:

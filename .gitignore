@@ -1,0 +1,7 @@
+# Local secrets
+.env
+Caddyfile.private
+
+# Keep templates in git
+!.env.example
+!Caddyfile.private.example

@@ -1,0 +1,47 @@
+name: Validate Caddy Stack
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ensure private Caddy include exists for CI
+        run: |
+          if [[ ! -f Caddyfile.private ]]; then
+            cp Caddyfile.private.example Caddyfile.private
+          fi
+
+      - name: Validate top-level compose.yaml
+        run: docker compose -f compose.yaml config >/dev/null
+
+      - name: Validate plugin/compose.yaml
+        run: docker compose -f plugin/compose.yaml config >/dev/null
+
+      - name: Check Caddyfile formatting
+        run: |
+          docker run --rm \
+            -v "$PWD":/work \
+            -w /work \
+            caddy:2 \
+            caddy fmt --check Caddyfile Caddyfile.private
+
+      - name: Validate Caddyfile syntax
+        run: |
+          docker run --rm \
+            -v "$PWD":/work \
+            -w /work \
+            caddy:2 \
+            caddy validate --config Caddyfile --adapter caddyfile

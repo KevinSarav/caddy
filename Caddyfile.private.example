@@ -1,0 +1,22 @@
+# Copy this file to Caddyfile.private and adjust for your environment.
+
+{
+	# Optional: contact email for certificate notices
+	# email {$CADDY_EMAIL}
+}
+
+# Example public API gate
+:9090 {
+	@public path /ping /public/* /cast/*
+	handle @public {
+		reverse_proxy museum:8080
+	}
+	respond "Forbidden" 403
+}
+
+# Example site block
+api.example.com {
+	reverse_proxy museum:8080
+}
+
+# Add additional domain -> upstream blocks here.
